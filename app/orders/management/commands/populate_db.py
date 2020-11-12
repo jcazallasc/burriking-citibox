@@ -101,24 +101,76 @@ class Command(BaseCommand):
 
     PRODUCT_OPTIONS = [
         {
+            "id": uuid.uuid4(),
             "product_id": PRODUCTS[0]["id"],
             "option_id": OPTIONS[0]["id"],
         },
         {
+            "id": uuid.uuid4(),
             "product_id": PRODUCTS[0]["id"],
             "option_id": OPTIONS[1]["id"],
         },
         {
+            "id": uuid.uuid4(),
             "product_id": PRODUCTS[0]["id"],
             "option_id": OPTIONS[2]["id"],
         },
         {
+            "id": uuid.uuid4(),
             "product_id": PRODUCTS[0]["id"],
             "option_id": OPTIONS[3]["id"],
         },
         {
+            "id": uuid.uuid4(),
             "product_id": PRODUCTS[0]["id"],
             "option_id": OPTIONS[4]["id"],
+        }
+    ]
+
+    OFFERS = [
+        {
+            "id": uuid.uuid4(),
+            "name": "Euromanía",
+            "conditions": {
+                "day_of_week": [2, 6],
+            },
+            "discount": 10,
+        },
+        {
+            "id": uuid.uuid4(),
+            "name": "Refrescomanía",
+            "conditions": {
+                "day_of_week": [0, 1, 2, 3, 4],
+                "combine": [
+                    {
+                        "product_option_id": OPTIONS[0]["id"],
+                        "quantity": 2,
+                    },
+                ],
+            },
+            "discount": 21,
+        },
+        {
+            "id": uuid.uuid4(),
+            "name": "Burrimenu",
+            "conditions": {
+                "day_of_week": [5, 6],
+                "combine": [
+                    {
+                        "product_id": PRODUCTS[0]["id"],
+                        "quantity": 1,
+                    },
+                    {
+                        "product_id": PRODUCTS[1]["id"],
+                        "quantity": 1,
+                    },
+                    {
+                        "product_id": PRODUCTS[2]["id"],
+                        "quantity": 1,
+                    },
+                ],
+            },
+            "discount": 21,
         }
     ]
 

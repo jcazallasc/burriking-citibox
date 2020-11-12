@@ -37,6 +37,7 @@ class DjangoOrderRepository(OrderRepository):
             _options_to_dump = []
             for _product_option in _product_options:
                 _options_to_dump.append({
+                    "id": _product_option.id,
                     "label": _product_option.option.label,
                     "group": _product_option.option.group,
                     "extra_price": _product_option.option.extra_price
@@ -45,6 +46,7 @@ class DjangoOrderRepository(OrderRepository):
             OrderLine.objects.create(
                 id=order_line_uuid,
                 order_id=order_uuid,
+                product_id=_product.id,
                 product_name=_product.name,
                 product_base_price=_product.base_price,
                 product_options=json.dumps(_options_to_dump)
@@ -82,6 +84,7 @@ class DjangoOrderRepository(OrderRepository):
             _order_lines.append(
                 OrderLineEntity(
                     id=_order_line.id,
+                    product_id=_order_line.product_id,
                     product_name=_order_line.product_name,
                     product_base_price=_order_line.product_base_price,
                     product_options=_product_options,
