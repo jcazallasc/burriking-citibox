@@ -9,29 +9,29 @@ from orders.infrastructure.persistence.django.order_line import OrderLine
 
 class DjangoOrderRepository(OrderRepository):
 
-    def create(self, order_id: int) -> None:
+    def create(self, order_uuid: str) -> None:
         try:
-            Order.objects.create(id=order_id)
+            Order.objects.create(id=order_uuid)
         except IntegrityError:
             raise OrderAlreadyExist
 
-    def delete(self, order_id: int) -> None:
+    def delete(self, order_uuid: str) -> None:
         try:
-            Order.objects.get(id=order_id).delete()
+            Order.objects.get(id=order_uuid).delete()
         except ObjectDoesNotExist:
             raise OrderDoesNotExist
 
-    def add_order_line(self, order_id: int, order_line_id: int) -> None:
+    def add_order_line(self, order_uuid: str, order_line_uuid: str) -> None:
         try:
-            Order.objects.get(id=order_id).order_lines.create(id=order_line_id)
+            Order.objects.get(id=order_uuid).order_lines.create(id=order_line_uuid)
         except IntegrityError:
             raise OrderLineAlreadyExist
 
-    def delete_order_line(self, order_line_id: int) -> None:
+    def delete_order_line(self, order_line_uuid: str) -> None:
         try:
-            OrderLine.objects.get(id=order_line_id).delete()
+            OrderLine.objects.get(id=order_line_uuid).delete()
         except ObjectDoesNotExist:
             raise OrderLineDoesNotExist
 
-    def get_order_lines(self, order_id: int) -> list:
+    def get_order_lines(self, order_uuid: str) -> list:
         return []

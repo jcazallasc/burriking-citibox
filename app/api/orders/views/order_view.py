@@ -9,12 +9,12 @@ from orders.dependencies import dependencies
 
 class OrderAPIView(APIView):
 
-    def post(self, request, order_id: int) -> Response:
-        OrderCreator(dependencies.order_repository).create(order_id)
+    def post(self, request, order_uuid: str) -> Response:
+        OrderCreator(dependencies.order_repository).create(order_uuid)
 
         return Response({}, status=status.HTTP_201_CREATED)
 
-    def delete(self, request, order_id: int) -> Response:
-        OrderDeleter(dependencies.order_repository).delete(order_id)
+    def delete(self, request, order_uuid: str) -> Response:
+        OrderDeleter(dependencies.order_repository).delete(order_uuid)
 
         return Response({}, status=status.HTTP_200_OK)

@@ -11,6 +11,6 @@ from api.orders.views.order_view import OrderAPIView
 
 app_name = 'api_orders'
 urlpatterns = [
-    path('<int:order_id>/', OrderAPIView.as_view()),
-    path('<int:order_id>/<int:order_line_id>/', OrderLineAPIView.as_view()), i
+    path('<str:order_uuid>/', OrderAPIView.as_view()),
+    path('<str:order_uuid>/<str:order_line_uuid>/', OrderLineAPIView.as_view()),
 ]
