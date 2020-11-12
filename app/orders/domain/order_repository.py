@@ -1,24 +1,25 @@
 import abc
+import uuid
 
 
 class OrderRepository(metaclass=abc.ABCMeta):
 
     @abc.abstractmethod
-    def create(self, order_id: int) -> None:
+    def create(self, order_uuid: uuid.UUID) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete(self, order_id: int) -> None:
+    def delete(self, order_uuid: uuid.UUID) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def add_order_line(self, order_id: int, order_line_id: int) -> None:
+    def add_order_line(self, order_uuid: uuid.UUID, order_line_uuid: uuid.UUID) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete_order_line(self, order_id: int) -> None:
+    def delete_order_line(self, order_uuid: uuid.UUID) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_order_lines(self, order_id: int) -> list:
+    def get_order_lines(self, order_uuid: uuid.UUID) -> list:
         raise NotImplementedError

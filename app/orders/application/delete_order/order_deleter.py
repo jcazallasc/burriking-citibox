@@ -1,5 +1,5 @@
 from orders.domain.order_repository import OrderRepository
-from orders.domain.value_objects.order_id import OrderId
+from orders.domain.value_objects.order_uuid import OrderUUId
 
 
 class OrderDeleter:
@@ -7,7 +7,7 @@ class OrderDeleter:
     def __init__(self, repository: OrderRepository):
         self.repository = repository
 
-    def create(self, order_id: int) -> None:
-        _order_id = OrderId(order_id)
+    def delete(self, order_uuid: str) -> None:
+        _order_uuid = OrderUUId(order_uuid)
 
-        self.repository.delete(_order_id.value)
+        self.repository.delete(_order_uuid.value)

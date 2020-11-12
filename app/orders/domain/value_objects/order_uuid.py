@@ -2,5 +2,5 @@ from dataclasses import dataclass
 
 
 @dataclass(frozen=True)
-class OrderId:
+class OrderUUId:
     value: str
