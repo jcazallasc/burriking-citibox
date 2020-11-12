@@ -12,3 +12,6 @@ class ProductOption(models.Model):
     option = models.ForeignKey(Option, on_delete=models.CASCADE, related_name="options")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.id} - {self.product.name} - {self.option.label} - {self.option.extra_price}"

@@ -13,3 +13,6 @@ class OrderLine(models.Model):
     product_options = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.id} - {self.product_name} - {self.product_base_price}"

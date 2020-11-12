@@ -5,7 +5,7 @@ from orders.domain.exceptions.invalid_uuid import InvalidUUID
 
 
 @dataclass(frozen=True)
-class ProductOptionUUID:
+class ProductUUID:
     value: str
 
     def __post_init__(self) -> None:
