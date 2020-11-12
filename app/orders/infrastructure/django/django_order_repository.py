@@ -4,6 +4,9 @@ from typing import List
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 
+from orders.domain.entities.order_entity import OrderEntity
+from orders.domain.entities.order_line_entity import OrderLineEntity
+from orders.domain.entities.product_option_entity import ProductOptionEntity
 from orders.domain.exceptions import OrderAlreadyExist, OrderDoesNotExist, OrderLineAlreadyExist, OrderLineDoesNotExist
 from orders.domain.order_repository import OrderRepository
 from orders.infrastructure.persistence.django.order import Order
@@ -55,5 +58,37 @@ class DjangoOrderRepository(OrderRepository):
         except ObjectDoesNotExist:
             raise OrderLineDoesNotExist
 
-    def get_order_lines(self, order_uuid: str) -> list:
-        OrderLine.objects.filter(order_id=order_uuid).all()
+    def get_orders_data(self) -> List[OrderEntity]:
+        _result = []
+        _orders = Order.objects.all()
+
+        for _order in _orders:
+            _result.append(self.get_order_data(_order.id))
+
+        return _result
+
+    def get_order_data(self, order_uuid: str) -> OrderEntity:
+        try:
+            _order = Order.objects.get(id=order_uuid)
+        except ObjectDoesNotExist:
+            raise OrderDoesNotExist
+
+        _order_lines = []
+        for _order_line in _order.order_lines.all():
+            _product_options = []
+            for _product_option in json.loads(_order_line.product_options):
+                _product_options.append(ProductOptionEntity(**_product_option))
+
+            _order_lines.append(
+                OrderLineEntity(
+                    id=_order_line.id,
+                    product_name=_order_line.product_name,
+                    product_base_price=_order_line.product_base_price,
+                    product_options=_product_options,
+                )
+            )
+
+        return OrderEntity(
+            id=order_uuid,
+            lines=_order_lines
+        )

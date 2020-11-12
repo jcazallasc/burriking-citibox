@@ -1,6 +1,7 @@
 import abc
-import uuid
 from typing import List
+
+from orders.domain.entities.order_entity import OrderEntity
 
 
 class OrderRepository(metaclass=abc.ABCMeta):
@@ -22,5 +23,9 @@ class OrderRepository(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_order_lines(self, order_uuid: str) -> list:
+    def get_orders_data(self) -> List[OrderEntity]:
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_order_data(self, order_uuid: str) -> OrderEntity:
         raise NotImplementedError
