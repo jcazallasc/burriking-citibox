@@ -1,0 +1,2 @@
+class OrderAlreadyExist(Exception):
+    pass

@@ -1,0 +1,2 @@
+class OrderLineDoesNotExist(Exception):
+    pass
