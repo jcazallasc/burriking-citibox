@@ -7,6 +7,9 @@ from .order import Order
 
 class OrderLine(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    product = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_lines")
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="order_lines")
+    product_name = models.CharField(max_length=120)
+    product_base_price = models.FloatField()
+    product_options = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

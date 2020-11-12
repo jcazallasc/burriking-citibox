@@ -17,7 +17,7 @@ class OrderRepository(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def delete_order_line(self, order_uuid: uuid.UUID) -> None:
+    def delete_order_line(self, order_line_uuid: uuid.UUID) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod
