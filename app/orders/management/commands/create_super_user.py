@@ -3,6 +3,9 @@ from django.core.management.base import BaseCommand
 
 
 class Command(BaseCommand):
+    """
+    Django command to create my super user
+    """
 
     def handle(self, *args, **options):
         _email = "jcazallasc@gmail.com"

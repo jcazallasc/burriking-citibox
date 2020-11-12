@@ -10,3 +10,6 @@ class Option(models.Model):
     extra_price = models.FloatField(default=0.0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self) -> str:
+        return f"{self.id} - {self.label} - {self.group} - {self.extra_price}"
