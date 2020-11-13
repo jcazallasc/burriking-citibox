@@ -15,7 +15,14 @@ class OrderRepository(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def create_order_line(self, order_uuid: str, order_line_uuid: str, product_uuid: str, options: List[str]) -> None:
+    def create_order_line(
+        self,
+        order_uuid: str,
+        order_line_uuid: str,
+        product_uuid: str,
+        options: List[dict],
+        subproducts: List[dict],
+    ) -> None:
         raise NotImplementedError
 
     @abc.abstractmethod

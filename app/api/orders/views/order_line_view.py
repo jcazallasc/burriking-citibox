@@ -23,6 +23,7 @@ class OrderLineAPIView(APIView):
             order_line_uuid,
             request.data["product_id"],
             request.data["product_options"],
+            request.data.get("subproducts", []),
         )
 
         return Response({}, status=status.HTTP_201_CREATED)

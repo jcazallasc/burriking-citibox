@@ -12,7 +12,7 @@ from api.orders.views.order_view import OrderAPIView
 
 app_name = 'api_orders'
 urlpatterns = [
-    path('', OrderListAPIView.as_view()),
-    path('<str:order_uuid>/', OrderAPIView.as_view()),
-    path('<str:order_uuid>/<str:order_line_uuid>/', OrderLineAPIView.as_view()),
+    path('', OrderListAPIView.as_view(), name="v1_orders"),
+    path('<str:order_uuid>/', OrderAPIView.as_view(), name="v1_order"),
+    path('<str:order_uuid>/<str:order_line_uuid>/', OrderLineAPIView.as_view(), name="v1_order_line"),
 ]

@@ -1,6 +1,9 @@
+import json
 import uuid
 
 from django.db import models
+
+from orders.domain.entities.offer_entity import OfferEntity
 
 
 class Offer(models.Model):
@@ -13,3 +16,11 @@ class Offer(models.Model):
 
     def __str__(self) -> str:
         return f"{self.id} - {self.name} - {self.discount}"
+
+    def to_entity(self) -> OfferEntity:
+        return OfferEntity(
+            id=str(self.id),
+            name=self.name,
+            conditions=json.loads(self.conditions),
+            discount=self.discount,
+        )
