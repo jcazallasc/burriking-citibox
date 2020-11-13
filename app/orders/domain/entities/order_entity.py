@@ -8,14 +8,15 @@ from orders.domain.entities.order_line_entity import OrderLineEntity
 class OrderEntity:
     id: str
     lines: Optional[List[OrderLineEntity]]
+    offer_id: str
+    offer_name: str
+    total: float
 
     def get_total(self) -> float:
         _total = 0.0
 
         for line in self.lines:
-            _total += line.product_base_price
-            for product_option in line.product_options:
-                _total += product_option.extra_price
+            _total += line.subtotal
 
         return _total
 
@@ -26,5 +27,7 @@ class OrderEntity:
                 line.to_dict()
                 for line in self.lines
             ],
-            "total": self.get_total(),
+            "offer_id": self.offer_id,
+            "offer_name": self.offer_name,
+            "total": self.total,
         }

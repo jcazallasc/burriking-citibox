@@ -5,9 +5,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 
 from orders.domain.entities.order_entity import OrderEntity
-from orders.domain.entities.order_line_entity import OrderLineEntity
-from orders.domain.entities.product_option_entity import ProductOptionEntity
-from orders.domain.exceptions import OrderAlreadyExist, OrderDoesNotExist, OrderLineAlreadyExist, OrderLineDoesNotExist
+from orders.domain.exceptions import (
+    OrderAlreadyExist,
+    OrderDoesNotExist,
+    OrderLineAlreadyExist,
+    OrderLineDoesNotExist,
+    ProductDoesNotExist,
+)
 from orders.domain.order_repository import OrderRepository
 from orders.infrastructure.persistence.django.order import Order
 from orders.infrastructure.persistence.django.order_line import OrderLine
@@ -32,24 +36,25 @@ class DjangoOrderRepository(OrderRepository):
     def create_order_line(self, order_uuid: str, order_line_uuid: str, product_uuid: str, options: List[str]) -> None:
         try:
             _product = Product.objects.get(id=product_uuid)
-            _product_options = ProductOption.objects.filter(id__in=options).all()
+        except ObjectDoesNotExist:
+            raise ProductDoesNotExist
 
-            _options_to_dump = []
-            for _product_option in _product_options:
-                _options_to_dump.append({
-                    "id": _product_option.id,
-                    "label": _product_option.option.label,
-                    "group": _product_option.option.group,
-                    "extra_price": _product_option.option.extra_price
-                })
+        _subtotal = _product.base_price
+        _product_options = []
 
+        for _product_option in ProductOption.objects.filter(id__in=options).all():
+            _subtotal += _product_option.option.extra_price
+            _product_options.append(_product_option.to_entity().to_dict())
+
+        try:
             OrderLine.objects.create(
                 id=order_line_uuid,
                 order_id=order_uuid,
                 product_id=_product.id,
                 product_name=_product.name,
                 product_base_price=_product.base_price,
-                product_options=json.dumps(_options_to_dump)
+                product_options=json.dumps(_product_options),
+                subtotal=_subtotal
             )
         except IntegrityError:
             raise OrderLineAlreadyExist
@@ -65,33 +70,12 @@ class DjangoOrderRepository(OrderRepository):
         _orders = Order.objects.all()
 
         for _order in _orders:
-            _result.append(self.get_order_data(_order.id))
+            _result.append(_order.to_entity())
 
         return _result
 
     def get_order_data(self, order_uuid: str) -> OrderEntity:
         try:
-            _order = Order.objects.get(id=order_uuid)
+            return Order.objects.get(id=order_uuid).to_entity()
         except ObjectDoesNotExist:
             raise OrderDoesNotExist
-
-        _order_lines = []
-        for _order_line in _order.order_lines.all():
-            _product_options = []
-            for _product_option in json.loads(_order_line.product_options):
-                _product_options.append(ProductOptionEntity(**_product_option))
-
-            _order_lines.append(
-                OrderLineEntity(
-                    id=_order_line.id,
-                    product_id=_order_line.product_id,
-                    product_name=_order_line.product_name,
-                    product_base_price=_order_line.product_base_price,
-                    product_options=_product_options,
-                )
-            )
-
-        return OrderEntity(
-            id=order_uuid,
-            lines=_order_lines
-        )

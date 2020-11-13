@@ -11,6 +11,7 @@ class OrderLineEntity:
     product_name: str
     product_base_price: float
     product_options: Optional[List[ProductOptionEntity]]
+    subtotal: float
 
     def to_dict(self) -> dict:
         return {
@@ -22,4 +23,5 @@ class OrderLineEntity:
                 product_options.to_dict()
                 for product_options in self.product_options
             ],
+            "subtotal": self.subtotal,
         }

@@ -2,7 +2,6 @@ from typing import List
 
 from orders.domain.entities.order_entity import OrderEntity
 from orders.domain.order_repository import OrderRepository
-from orders.domain.value_objects.order_uuid import OrderUUId
 
 
 class OrderList:
