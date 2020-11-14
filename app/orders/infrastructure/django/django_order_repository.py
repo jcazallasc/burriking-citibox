@@ -19,43 +19,30 @@ class DjangoOrderRepository(OrderRepository):
         self.offer_repositiory = offer_repository
         self.product_repositiory = product_repository
 
-    def _get_order(self, order_uuid: str) -> Order:
+    def __get_order(self, order_uuid: str) -> Order:
         try:
             return Order.objects.get(id=order_uuid)
         except ObjectDoesNotExist:
             raise OrderDoesNotExist
 
-    def _get_order_line(self, order_line_uuid: str) -> OrderLine:
+    def __get_order_line(self, order_line_uuid: str) -> OrderLine:
         try:
             return OrderLine.objects.get(id=order_line_uuid)
         except ObjectDoesNotExist:
             raise OrderLineDoesNotExist
 
-    def create(self, order_uuid: str) -> None:
-        try:
-            Order.objects.create(id=order_uuid)
-        except IntegrityError:
-            raise OrderAlreadyExist
-
-    def delete(self, order_uuid: str) -> None:
-        self._get_order(order_uuid).delete()
-
-    def _process_total_order(self, order_uuid: str) -> None:
-        _order = self._get_order(order_uuid)
-
-        _order_entity = _order.to_entity()
-
+    def __process_total_order(self, order: Order) -> None:
+        _order_entity = order.to_entity()
         _offers = self.offer_repositiory.get_all()
-
         _order_entity.calculate_total(_offers)
 
-        _order.total = _order_entity.total
-        _order.offer_id = _order_entity.offer_id
-        _order.offer_name = _order_entity.offer_name
+        order.total = _order_entity.total
+        order.offer_id = _order_entity.offer_id
+        order.offer_name = _order_entity.offer_name
 
-        _order.save()
+        order.save()
 
-    def _get_product_options(self, options: List[dict]) -> List[dict]:
+    def __get_product_options(self, options: List[dict]) -> List[dict]:
         _product_options = []
 
         for option in options:
@@ -67,7 +54,7 @@ class DjangoOrderRepository(OrderRepository):
 
         return _product_options
 
-    def _get_subproducts(self, subproducts: List[dict]) -> List[dict]:
+    def __get_subproducts(self, subproducts: List[dict]) -> List[dict]:
         _subproducts = []
 
         for subproduct in subproducts:
@@ -89,7 +76,7 @@ class DjangoOrderRepository(OrderRepository):
 
         return _subproducts
 
-    def _get_subtotal(self, base_price: float, options: List[dict], subproducts: List[dict]) -> float:
+    def __get_subtotal(self, base_price: float, options: List[dict], subproducts: List[dict]) -> float:
         _subtotal = base_price
 
         for option in options:
@@ -101,6 +88,15 @@ class DjangoOrderRepository(OrderRepository):
 
         return _subtotal
 
+    def create(self, order_uuid: str) -> None:
+        try:
+            Order.objects.create(id=order_uuid)
+        except IntegrityError:
+            raise OrderAlreadyExist
+
+    def delete(self, order_uuid: str) -> None:
+        self.__get_order(order_uuid).delete()
+
     def create_order_line(
             self,
             order_uuid: str,
@@ -110,14 +106,12 @@ class DjangoOrderRepository(OrderRepository):
             subproducts: List[dict],
     ) -> None:
         _product = self.product_repositiory.get_product(product_uuid)
-
-        _product_options = self._get_product_options(options)
-        _subproducts = self._get_subproducts(subproducts)
-
-        _subtotal = self._get_subtotal(_product.base_price, _product_options, _subproducts)
+        _product_options = self.__get_product_options(options)
+        _subproducts = self.__get_subproducts(subproducts)
+        _subtotal = self.__get_subtotal(_product.base_price, _product_options, _subproducts)
 
         try:
-            OrderLine.objects.create(
+            order_line = OrderLine.objects.create(
                 id=order_line_uuid,
                 order_id=order_uuid,
                 product_id=_product.id,
@@ -130,10 +124,10 @@ class DjangoOrderRepository(OrderRepository):
         except IntegrityError:
             raise OrderLineAlreadyExist
 
-        self._process_total_order(order_uuid)
+        self.__process_total_order(order_line.order)
 
     def delete_order_line(self, order_line_uuid: str) -> None:
-        self._get_order_line(order_line_uuid).delete()
+        self.__get_order_line(order_line_uuid).delete()
 
     def get_orders_data(self) -> List[OrderEntity]:
         _result = []
@@ -145,4 +139,4 @@ class DjangoOrderRepository(OrderRepository):
         return _result
 
     def get_order_data(self, order_uuid: str) -> OrderEntity:
-        self._get_order(order_uuid).to_entity()
+        self.__get_order(order_uuid).to_entity()
