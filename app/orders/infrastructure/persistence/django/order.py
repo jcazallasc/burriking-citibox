@@ -14,7 +14,12 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        return f"{self.id}"
+        order_lines = ", ".join([
+            str(order_line)
+            for order_line in self.order_lines.all()
+        ])
+
+        return f"{order_lines} {self.total}€"
 
     def to_entity(self) -> OrderEntity:
         return OrderEntity(
