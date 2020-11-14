@@ -23,21 +23,7 @@ class OrderLine(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self) -> str:
-        details = [
-            product_option["value"]
-            for product_option in json.loads(self.product_options)
-        ]
-
-        for subproduct in json.loads(self.subproducts):
-            subproduct_options = ", ".join([
-                subproduct_option["value"]
-                for subproduct_option in subproduct["subproduct_options"]
-            ])
-            details.append("{}({})".format(subproduct["subproduct_name"], subproduct_options))
-
-        details = ", ".join(details)
-
-        return f"{self.product_name}({details})"
+        return str(self.to_entity())
 
     def to_entity(self) -> OrderLineEntity:
         return OrderLineEntity(

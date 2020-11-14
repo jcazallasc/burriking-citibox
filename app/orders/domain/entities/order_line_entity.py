@@ -15,6 +15,23 @@ class OrderLineEntity:
     subproducts: Optional[List[SubproductEntity]]
     subtotal: float
 
+    def __str__(self) -> str:
+        details = [
+            product_option.value
+            for product_option in self.product_options
+        ]
+
+        for subproduct in self.subproducts:
+            subproduct_options = ", ".join([
+                subproduct_option["value"]
+                for subproduct_option in subproduct.subproduct_options
+            ])
+            details.append("{}({})".format(subproduct.subproduct_name, subproduct_options))
+
+        details = ", ".join(details)
+
+        return f"{self.product_name}({details})"
+
     def to_dict(self) -> dict:
         return {
             "id": self.id,

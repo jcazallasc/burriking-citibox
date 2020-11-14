@@ -16,6 +16,14 @@ class OrderEntity:
     offer_name: Optional[str]
     total: float
 
+    def __str__(self) -> str:
+        lines = ", ".join([
+            str(line)
+            for line in self.lines
+        ])
+
+        return f"{lines} {self.total}€"
+
     def calculate_total(self, offers: List["OfferEntity"]) -> None:
         _total = 0.0
 
