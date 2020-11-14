@@ -127,7 +127,12 @@ class DjangoOrderRepository(OrderRepository):
         self.__process_total_order(order_line.order)
 
     def delete_order_line(self, order_line_uuid: str) -> None:
-        self.__get_order_line(order_line_uuid).delete()
+        _order_line = self.__get_order_line(order_line_uuid)
+        _order = _order_line.order
+
+        _order_line.delete()
+
+        self.__process_total_order(_order)
 
     def get_orders_data(self) -> List[OrderEntity]:
         _result = []
