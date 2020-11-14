@@ -80,10 +80,6 @@ class OrderLineTests(TestCase):
             ],
         })
 
-        import ipdb
-        ipdb.set_trace()
-        response = self.client.get(reverse("api:api_orders:v1_orders"))
-
         self.client.post(self.__get_url(), format='json', data={
             "product_id": str(_refresco.id),
             "product_options": [
