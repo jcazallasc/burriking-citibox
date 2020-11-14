@@ -24,7 +24,7 @@ class OrderLineTests(TestCase):
 
         Order.objects.create(id=self.order_uuid)
 
-    def _get_url(self) -> str:
+    def __get_url(self) -> str:
         return reverse(
             ORDER_LINE,
             kwargs={
@@ -66,7 +66,7 @@ class OrderLineTests(TestCase):
         subtotal += _patata.base_price + _patata_tamano.extra_price
         subtotal += _refresco.base_price + _refresco_tamano.extra_price
 
-        self.client.post(self._get_url(), format='json', data={
+        self.client.post(self.__get_url(), format='json', data={
             "product_id": str(_patata.id),
             "product_options": [
                 {
@@ -80,7 +80,7 @@ class OrderLineTests(TestCase):
             ],
         })
 
-        self.client.post(self._get_url(), format='json', data={
+        self.client.post(self.__get_url(), format='json', data={
             "product_id": str(_refresco.id),
             "product_options": [
                 {
@@ -94,7 +94,7 @@ class OrderLineTests(TestCase):
             ],
         })
 
-        self.client.post(self._get_url(), format='json', data={
+        self.client.post(self.__get_url(), format='json', data={
             "product_id": str(_hamburguesa.id),
             "product_options": [
                 {
