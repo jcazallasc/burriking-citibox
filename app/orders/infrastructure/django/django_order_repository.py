@@ -5,28 +5,19 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import IntegrityError
 
 from orders.domain.entities.order_entity import OrderEntity
-from orders.domain.exceptions import (
-    OrderAlreadyExist,
-    OrderDoesNotExist,
-    OrderLineAlreadyExist,
-    OrderLineDoesNotExist,
-    ProductDoesNotExist,
-)
+from orders.domain.exceptions import OrderAlreadyExist, OrderDoesNotExist, OrderLineAlreadyExist, OrderLineDoesNotExist
+from orders.domain.offer_repository import OfferRepository
 from orders.domain.order_repository import OrderRepository
-from orders.infrastructure.persistence.django.offer import Offer
+from orders.domain.product_repository import ProductRepository
 from orders.infrastructure.persistence.django.order import Order
 from orders.infrastructure.persistence.django.order_line import OrderLine
-from orders.infrastructure.persistence.django.product import Product
-from orders.infrastructure.persistence.django.product_option import ProductOption
 
 
 class DjangoOrderRepository(OrderRepository):
 
-    def _get_product(self, product_uuid: str) -> Order:
-        try:
-            return Product.objects.get(id=product_uuid)
-        except ObjectDoesNotExist:
-            raise ProductDoesNotExist
+    def __init__(self, offer_repository: OfferRepository, product_repository: ProductRepository) -> None:
+        self.offer_repositiory = offer_repository
+        self.product_repositiory = product_repository
 
     def _get_order(self, order_uuid: str) -> Order:
         try:
@@ -54,7 +45,7 @@ class DjangoOrderRepository(OrderRepository):
 
         _order_entity = _order.to_entity()
 
-        _offers = [_offer.to_entity() for _offer in Offer.objects.all()]
+        _offers = self.offer_repositiory.get_all()
 
         _order_entity.calculate_total(_offers)
 
@@ -68,9 +59,9 @@ class DjangoOrderRepository(OrderRepository):
         _product_options = []
 
         for option in options:
-            _product_option = ProductOption.objects.get(id=option["product_option_id"])
+            _product_option = self.product_repositiory.get_product_option(option["product_option_id"])
             _product_options.append({
-                **_product_option.to_entity().to_dict(),
+                **_product_option.to_dict(),
                 "value": option["value"],
             })
 
@@ -80,7 +71,7 @@ class DjangoOrderRepository(OrderRepository):
         _subproducts = []
 
         for subproduct in subproducts:
-            _subproduct = self._get_product(subproduct["subproduct_id"])
+            _subproduct = self.product_repositiory.get_product(subproduct["subproduct_id"])
 
             _data = {
                 "subproduct_name": _subproduct.name,
@@ -88,9 +79,9 @@ class DjangoOrderRepository(OrderRepository):
             }
 
             for subproduct_option in subproduct["subproduct_options"]:
-                _product_option = ProductOption.objects.get(id=subproduct_option["product_option_id"])
+                _product_option = self.product_repositiory.get_product_option(subproduct_option["product_option_id"])
                 _data["subproduct_options"].append({
-                    **_product_option.to_entity().to_dict(),
+                    **_product_option.to_dict(),
                     "value": subproduct_option["value"],
                 })
 
@@ -118,7 +109,7 @@ class DjangoOrderRepository(OrderRepository):
             options: List[dict],
             subproducts: List[dict],
     ) -> None:
-        _product = self._get_product(product_uuid)
+        _product = self.product_repositiory.get_product(product_uuid)
 
         _product_options = self._get_product_options(options)
         _subproducts = self._get_subproducts(subproducts)

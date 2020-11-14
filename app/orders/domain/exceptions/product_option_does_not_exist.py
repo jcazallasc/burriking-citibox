@@ -1,0 +1,2 @@
+class ProductOptionDoesNotExist(Exception):
+    pass
