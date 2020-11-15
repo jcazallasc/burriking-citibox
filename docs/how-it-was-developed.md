@@ -2,10 +2,18 @@
 
 ## Index
 
-- [Specs](README.md) 
-- [Instructions](docs/instructions.md) 
-- [How it was developed](docs/how-it-was-developed.md) 
-- [API doc](docs/api/orders.md) 
+- [Specs](/README.md) 
+- [Instructions](/docs/instructions.md) 
+- [How it was developed](/docs/how-it-was-developed.md) 
+- [API doc](/docs/api/orders.md) 
+
+## Overview
+
+I typically use the term MVP to referer to a project which validates an idea or path and evolves the system based on the feedback retrieved. **But here the MVP (idea and system) is already validated.**. Following this meaning, in my humble opinion, this implementation is a solution over-engineered for an MVP phase in terms of software architecture. Probably, for this phase, having hard coupling with Django/Django Rest Framework is enough so the project will gain better learning and adapting curve and faster development/iteration.
+
+## API work flow
+
+![Image](images/api-sequence.png)
 
 ## Dockerizing
 
@@ -53,8 +61,6 @@ Every time an order line is added, the system calculates the subtotal of the lin
 
 I have structured the challenge thinking in `Hexagonal architecture`. I splited everything in 3 folders: `application` (use cases), `domain` (bussines logic) and `infrastructure` (integrations).
 
-In my opinion, in a real MVP, it's over engineering but really this is a challenge.
-
 ##### Uses Cases
 
 Each use case is separated in its folder: `create_order`, `delete_order`, ...
@@ -63,15 +69,13 @@ You can found it in `orders/application/`
 
 ##### Repository pattern
 
-A synonym of `Hexagonal architecture` is `Ports & Adapters architecture` so is essential to have this pattern and injecting the ports in uses cases. Using it, we are decoupling the app from `Django` / `MySQL` and allow us to have others adapters (`elasticsearch` / `SQLAlchemy`) and we could replace one for other relatively easy.
-
-Take into account in use cases I'm aplying `DIP` (Dependency Inversion Principle).
+A synonym of `Hexagonal architecture` is `Ports & Adapters architecture` so is essential to have this pattern and injecting the ports in uses cases. Using it, we are decoupling the app from `Django` / `MySQL` and allow us to have others adapters (`elasticsearch` / `SQLAlchemy` / ...) and we could replace one for other relatively easy. Also, I'm aplying `DIP` (Dependency Inversion Principle) in uses cases.
 
 ##### Entities
 
-To put the business logic in the right place I needed to have `Entities` to push the offer logic to the `Entity`.
+To put the business logic in the right place I needed to have `Entities`. It allows us to push the offer logic to the `Entity`.
 
-Repositories work with its implementation, DjangoOrderRepository talk with Django, but return `Entities`.
+Repositories talk with its implementation, DjangoOrderRepository talks with Django, but always return `Entities`.
 
 ##### Value objects
 

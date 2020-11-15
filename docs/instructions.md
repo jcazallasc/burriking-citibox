@@ -2,10 +2,10 @@
 
 ## Index
 
-- [Specs](README.md) 
-- [Instructions](docs/instructions.md) 
-- [How it was developed](docs/how-it-was-developed.md) 
-- [API doc](docs/api/orders.md) 
+- [Specs](/README.md) 
+- [Instructions](/docs/instructions.md) 
+- [How it was developed](/docs/how-it-was-developed.md) 
+- [API doc](/docs/api/orders.md) 
 
 ## Prerequisites
 - [Docker](https://docs.docker.com/docker-for-mac/install/) 

@@ -1,5 +1,14 @@
 # Orders: API
 
+## Index
+
+- [Specs](/README.md) 
+- [Instructions](/docs/instructions.md) 
+- [How it was developed](/docs/how-it-was-developed.md) 
+- [API doc](/docs/api/orders.md) 
+
+## Overview
+
 As it was developed using DRF, you can access to `http://localhost:8000/api/` to interact with the API.
 
 Supports:
@@ -44,6 +53,7 @@ Content-Type application/json
                             "Gajo",
                             "De la abuela"
                         ],
+                        "stock": true,
                         "extra_price": 0.0,
                         "value": "Deluxe"
                     },
@@ -53,6 +63,7 @@ Content-Type application/json
                         "values": [
                             "Grandes"
                         ],
+                        "stock": true,
                         "extra_price": 2.5,
                         "value": "Grandes"
                     }
@@ -63,7 +74,8 @@ Content-Type application/json
         ],
         "offer_id": null,
         "offer_name": null,
-        "total": 4.5
+        "total": 4.5,
+        "created_at": "2020-11-15T08:31:22.977423Z"
     }
 ]
 ```
@@ -107,6 +119,7 @@ Content-Type application/json
                         "Gajo",
                         "De la abuela"
                     ],
+                    "stock": true,
                     "extra_price": 0.0,
                     "value": "Deluxe"
                 },
@@ -116,6 +129,7 @@ Content-Type application/json
                     "values": [
                         "Grandes"
                     ],
+                    "stock": true,
                     "extra_price": 2.5,
                     "value": "Grandes"
                 }
@@ -126,7 +140,8 @@ Content-Type application/json
     ],
     "offer_id": null,
     "offer_name": null,
-    "total": 4.5
+    "total": 4.5,
+    "created_at": "2020-11-15T08:31:22.977423Z"
 }
 ```
 
