@@ -14,6 +14,7 @@ class ProductOption(models.Model):
     label = models.CharField(max_length=120)
     values = models.TextField(default=json.dumps([]))
     extra_price = models.FloatField(default=0.0)
+    stock = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -26,4 +27,5 @@ class ProductOption(models.Model):
             label=self.label,
             values=json.loads(self.values),
             extra_price=self.extra_price,
+            stock=self.stock,
         )

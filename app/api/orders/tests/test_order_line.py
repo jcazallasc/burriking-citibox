@@ -9,6 +9,7 @@ from rest_framework.test import APIClient
 
 from orders.domain.exceptions.order_line_does_not_exist import OrderLineDoesNotExist
 from orders.infrastructure.persistence.django.order import Order
+from orders.infrastructure.persistence.django.order_line import OrderLine
 from orders.infrastructure.persistence.django.product import Product
 
 
@@ -140,7 +141,7 @@ class OrderLineTests(TestCase):
             },
         )
 
-        total = self.product.base_price + self.product_option.extra_price
+        subtotal = self.product.base_price + self.product_option.extra_price
 
         self.client.post(url, format='json', data={
             "product_id": str(self.product.id),
@@ -152,7 +153,8 @@ class OrderLineTests(TestCase):
             ],
         })
 
-        self.assertEqual(total, Order.objects.get(id=self.order_uuid).total)
+        self.assertEqual(subtotal, OrderLine.objects.get(id=order_line_uuid).subtotal)
+        self.assertTrue(0.0 != Order.objects.get(id=self.order_uuid).total)
 
     def test_create_order_line_with_subproducts(self):
         """Test creating order line with subproducts"""

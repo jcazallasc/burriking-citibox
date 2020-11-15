@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from datetime import datetime
 from typing import TYPE_CHECKING, List, Optional
 
 from orders.domain.entities.order_line_entity import OrderLineEntity
@@ -15,6 +16,7 @@ class OrderEntity:
     offer_id: Optional[str]
     offer_name: Optional[str]
     total: float
+    created_at: datetime = datetime.now()
 
     def __str__(self) -> str:
         lines = ", ".join([
@@ -54,4 +56,5 @@ class OrderEntity:
             "offer_id": self.offer_id,
             "offer_name": self.offer_name,
             "total": self.total,
+            "created_at": self.created_at,
         }

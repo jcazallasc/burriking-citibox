@@ -26,4 +26,5 @@ class Order(models.Model):
             offer_id=str(self.offer_id) if self.offer_id else None,
             offer_name=self.offer_name,
             total=self.total,
+            created_at=self.created_at,
         )
