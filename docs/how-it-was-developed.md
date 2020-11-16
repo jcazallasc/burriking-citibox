@@ -11,9 +11,13 @@
 
 I typically use the term MVP to referer to a project which validates an idea or path and evolves the system based on the feedback retrieved. **But here the MVP (idea and system) is already validated.**. Following this meaning, in my humble opinion, this implementation is a solution over-engineered for an MVP phase in terms of software architecture. Probably, for this phase, having hard coupling with Django/Django Rest Framework is enough so the project will gain better learning and adapting curve and faster development/iteration.
 
-## API work flow
+## Hey guy! Are you versioning `.vscode` folder?
 
-![Image](images/api-sequence.png)
+For good organization I encapsulate everything under `folder`. So, it produces my IDE doesn't understand where/what are the packages and classes. For that, I needed to add the `autoComplete.extraPaths`.
+
+Assuming you will clone this repository, I versioned this file to notify you probably your IDE will need as well.
+
+In a real project, I'm never versioning an IDE configuration file.
 
 ## Dockerizing
 
@@ -22,6 +26,10 @@ The challenge has been developed using `Docker` and `Docker Compose`. I have cre
 ## Using flake8 and isort
 
 As part of my daily work, I'm very familiar with `flake8` and `isort` tools. These tools help us as developers to type maintainable and readable code. I'm checking these tools in my CI pipeline.
+
+## API work flow
+
+![Image](images/api-sequence.png)
 
 ## Data models
 
@@ -89,6 +97,6 @@ To give more semantic to errors under control I have created custom exceptions s
 
 ##### Introducing to CQRS
 
-I'm not implementing the `CQRS pattern` but I did some movement, i.e. the API expects UUIDs instead of delegating the creation in `Django`.
+I'm not implementing the `CQRS pattern` but I did some movement, i.e. the API expects UUIDs instead of delegating the creation in `Django`. Ideally, endpoints like `create_order`, `create_order_line`, `delete_...`, will be commands so I'm returning an empty body in the response.
 
 Moreover, I structure the use cases in a way that favors the switch to `Commands` / `Queries`.

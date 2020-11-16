@@ -2,6 +2,13 @@ Burriking 🍔🍟
 ====================================
 A little burguer shop with global ambitions.
 
+## Index
+
+- [Specs](/README.md) 
+- [Instructions](/docs/instructions.md) 
+- [How it was developed](/docs/how-it-was-developed.md) 
+- [API doc](/docs/api/orders.md) 
+
 ## Historia
 
 ### Los comienzos
