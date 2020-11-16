@@ -27,15 +27,23 @@ The challenge has been developed using `Docker` and `Docker Compose`. I have cre
 
 As part of my daily work, I'm very familiar with `flake8` and `isort` tools. These tools help us as developers to type maintainable and readable code. I'm checking these tools in my CI pipeline.
 
+## Django rest framework
+
+`DRF` is the framework used to route the request to its proper view. Also, I used its serializers to validate requests, i.e. the add order line request.
+
+## How to test manually the app?
+
+As the challenge has been built using DRF, it provides a way to interact with API endpoints. You can access `http://localhost:8000/api/` all DRF will guide you to proper endpoints.
+
+On the other hand, creating a Django superuser you will be able to monitor or /add/edit/delete data using the Django Admin. You can enter the Django Admin here `http://localhost:8000/admin/`
+
 ## API work flow
 
 ![Image](images/api-sequence.png)
 
 ## Data models
 
-I'm not very proud of this data model but I needed to go forward. I'm not very proud because I think there are more easy solutions but... I don't found it yet.
-
-The data models I built are resilient in terms of product changes. I mean, In a real business products evolve (its prices, names, options prices, option name,...) so in each `OrderLine` I'm storing the snapshot of those fields.
+The data models I built are resilient in terms of product changes. I mean, In a real business products evolve (its prices, names, options prices, option name,...) so in each `OrderLine` I'm storing the snapshot of those fields. Some data models are storing JSON data, in case of evolving the application, a good point will be considered to extract this data to other models/entities to have an explicitly structure.
 
 ![Image](images/data_model.png)
 
@@ -43,15 +51,7 @@ The data models I built are resilient in terms of product changes. I mean, In a 
 
 I mainly have 2 types of tests: acceptance (e2e) and unit. You can found the tests E2E under the folder `api/orders/tests`. On the other hand, you can found unittest under the folders `orders/tests`.
 
-I usually work using the philosophy `TDD` but in challenges, in my opinion, is really hard because I'm building all things. Anyway, `TDD` is something I like to follow.
-
 Finally, I have a really fat test (my real scenario). You can found it here `api/orders/tests/test_real_scenario`.
-
-## Django rest framework
-
-`DRF` is the framework used to route the request to its proper view. Also, I used its serializers to validate requests, i.e. the add order line request.
-
-Probably, in a real system is necessary some kind of authentication, could be managed by `DRF`.
 
 ## Offers checker
 
