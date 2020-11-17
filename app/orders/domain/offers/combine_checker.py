@@ -8,7 +8,9 @@ from orders.domain.entities.subproduct_entity import SubproductEntity
 class CombineChecker:
     """
     Checks if options specified in conditions match in order.
+
     It's able to check the quantity of a product_id and/or quantity of a product_option.
+
     Moreover, it's able to check the quantity of those products inside.
     """
 

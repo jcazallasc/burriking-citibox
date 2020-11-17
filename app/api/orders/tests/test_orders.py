@@ -11,7 +11,11 @@ ORDER = 'api:api_orders:v1_order'
 
 
 class OrdersTests(TestCase):
-    """ E2E tests working with Orders API """
+    """
+    E2E tests using Orders API
+
+    Listing orders
+    """
 
     def setUp(self):
         self.client = APIClient()

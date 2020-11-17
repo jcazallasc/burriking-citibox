@@ -15,7 +15,19 @@ ORDER_LINE = 'api:api_orders:v1_order_line'
 
 
 class OfferTests(TestCase):
-    """ Tests to check the offer logic """
+    """
+    Tests to checking the offer logic
+
+    Checking when daily offer applies
+
+    Checking when daily offer applies + Having a specific product in the order
+
+    Checking when daily offer applies + Having a specific product in the order
+
+    Checking when daily offer applies + Having a specific product in the order and/or product option
+
+    Checking when daily offer applies + Having a specific subproduct in the order and/or subproduct option
+    """
 
     def setUp(self):
         self.client = APIClient()

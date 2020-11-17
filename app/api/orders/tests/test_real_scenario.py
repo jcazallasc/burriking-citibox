@@ -14,7 +14,11 @@ ORDER_LINE = 'api:api_orders:v1_order_line'
 
 
 class OrderLineTests(TestCase):
-    """ E2E tests working with API """
+    """
+    E2E tests using API
+
+    Creating a real order. Adding mutiple products with different options.
+    """
 
     def setUp(self):
         self.client = APIClient()

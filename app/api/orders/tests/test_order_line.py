@@ -17,7 +17,15 @@ ORDER_LINE = 'api:api_orders:v1_order_line'
 
 
 class OrderLineTests(TestCase):
-    """ E2E tests working with OrderLine API """
+    """
+    E2E tests using OrderLine API.
+
+    Creating simple Order Line + Creating Order Line with subproducts
+
+    Checking correct calculation of subtotal when an Order Line is created
+
+    Removing Order Line
+    """
 
     def setUp(self):
         self.client = APIClient()
